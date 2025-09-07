@@ -40,14 +40,20 @@ class LayoutManager {
   computeRandomPositionFor(element) {
     const { width: vw, height: vh } = this.getViewportSize(); // fresh each time
     const rect = element.getBoundingClientRect(); // use actual size on screen
-    const maxLeft = Math.max(0, vw - rect.width - this.margin); // stay in bounds
-    const maxTop = Math.max(0, vh - rect.height - this.margin);
+    const maxLeft = Math.max(0, vw - rect.width - this.margin); // horizontal bounds
     const minLeft = Math.min(this.margin, maxLeft); // handle tiny viewports
 
-    // Reserve space for the sticky header so buttons don't go underneath it.
+    // Vertically, reserve half the element height at top and bottom,
+    // and keep below the sticky header's bottom edge.
     const topbar = document.querySelector('.topbar');
-    const reservedTop = topbar ? Math.max(0, topbar.getBoundingClientRect().bottom) : 0;
-    const minTop = Math.min(reservedTop + this.margin, maxTop);
+    const headerBottom = topbar ? Math.max(0, topbar.getBoundingClientRect().bottom) : 0;
+    const halfH = rect.height / 2;
+    const safeTop = headerBottom + halfH;
+    const safeBottom = vh - halfH;
+    const computedMaxTop = Math.max(0, safeBottom - rect.height);
+    const minTop = Math.min(safeTop, computedMaxTop);
+    const maxTop = computedMaxTop;
+
     const left = randInt(minLeft, maxLeft); // pick a random slot horizontally
     const top = randInt(minTop, maxTop); // pick a random slot vertically
     return { left, top };
