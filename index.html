@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Memory Order Game</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="controls">
+        <label id="label-count" for="btnCount">How many buttons to create?</label>
+        <input id="btnCount" type="number" min="3" max="7" placeholder="3-7" />
+        <button id="goBtn" type="button">Go</button>
+      </div>
+      <div id="message" role="status" aria-live="polite"></div>
+    </header>
+
+    <main>
+      <div id="playfield" class="playfield" aria-label="Playfield"></div>
+    </main>
+
+    <script src="lang/messages/en/user.js" defer></script>
+    <script src="js/script.js" defer></script>
+  </body>
+  </html>
