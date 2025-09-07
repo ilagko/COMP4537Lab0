@@ -43,7 +43,11 @@ class LayoutManager {
     const maxLeft = Math.max(0, vw - rect.width - this.margin); // stay in bounds
     const maxTop = Math.max(0, vh - rect.height - this.margin);
     const minLeft = Math.min(this.margin, maxLeft); // handle tiny viewports
-    const minTop = Math.min(this.margin, maxTop);
+
+    // Reserve space for the sticky header so buttons don't go underneath it.
+    const topbar = document.querySelector('.topbar');
+    const reservedTop = topbar ? Math.max(0, topbar.getBoundingClientRect().bottom) : 0;
+    const minTop = Math.min(reservedTop + this.margin, maxTop);
     const left = randInt(minLeft, maxLeft); // pick a random slot horizontally
     const top = randInt(minTop, maxTop); // pick a random slot vertically
     return { left, top };
