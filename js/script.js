@@ -45,14 +45,14 @@ class LayoutManager {
 
     // Vertically, reserve half the element height at top and bottom,
     // and keep below the sticky header's bottom edge.
-    const topbar = document.querySelector('.topbar');
-    const headerBottom = topbar ? Math.max(0, topbar.getBoundingClientRect().bottom) : 0;
-    const halfH = rect.height / 2;
-    const safeTop = headerBottom + halfH;
-    const safeBottom = vh - halfH;
-    const computedMaxTop = Math.max(0, safeBottom - rect.height);
-    const minTop = Math.min(safeTop, computedMaxTop);
-    const maxTop = computedMaxTop;
+    const topbar = document.querySelector('.topbar'); // sticky header element (if present)
+    const headerBottom = topbar ? Math.max(0, topbar.getBoundingClientRect().bottom) : 0; // header's bottom Y in viewport, clamped to >= 0
+    const halfH = rect.height / 2; // half of the button's height (used as safety buffer)
+    const safeTop = headerBottom + halfH; // minimum top so button never sits under header
+    const safeBottom = vh - halfH; // Y position half a button above bottom of viewport
+    const computedMaxTop = Math.max(0, safeBottom - rect.height); // largest top to keep bottom at safeBottom or above
+    const minTop = Math.min(safeTop, computedMaxTop); // clamp in case header+buffer exceeds available space
+    const maxTop = computedMaxTop; // final upper bound for random top
 
     const left = randInt(minLeft, maxLeft); // pick a random slot horizontally
     const top = randInt(minTop, maxTop); // pick a random slot vertically
